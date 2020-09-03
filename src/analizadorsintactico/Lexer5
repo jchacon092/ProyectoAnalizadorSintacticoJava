@@ -1,0 +1,46 @@
+package analizadorsintactico;
+
+import static analizadorsintactico.Token5.*;
+%%
+%class Lexer5
+%type Token5
+L = [a-zA-Z_]
+D = [0-9]
+NUMERO = [0-9]+
+ID = [a-zA-Z]?+[0-9]*
+WHITE=[ \t\r\n] 
+
+FOR="for"
+IF="if"
+WHILE="while"
+DO="do"
+INT="int"
+STRING="string"
+CHAR="char"
+BYTE="byte"
+FLOAT="float"
+SHORT="short"
+ESPACIO=" "
+PUNTOCOMA=";"
+INBLOQUE="{"
+FINBLOQUE="}"
+PARE1="("
+PARE2=")"
+IGUAL = "="
+PRINTF="printf"
+OPERADOR_RELACIONAL = [">"|"<"|"=="|"!="|">="|"<="|"<<"|">>"]
+OPERADOR_ARITMETICO = ["+"|"-"] 
+
+%{
+public String lexeme;
+%}
+%%
+{WHITE} {/*Ignore*/}
+
+/*WHILE*/
+{WHILE}{PARE1}{ID}{OPERADOR_RELACIONAL}{NUMERO}{PARE2} {lexeme = yytext(); return WHILE_LINEA1;}
+{INBLOQUE} {lexeme = yytext(); return WHILE_LINEA2;}
+{ID}{IGUAL}{ID}{OPERADOR_ARITMETICO}{NUMERO}{PUNTOCOMA} {lexeme = yytext(); return WHILE_LINEA3;}
+{FINBLOQUE} {lexeme = yytext(); return WHILE_LINEA4;}
+
+. {return ERROR;}

@@ -1,0 +1,48 @@
+package analizadorsintactico;
+
+import static analizadorsintactico.Token4.*;
+%%
+%class Lexico
+%type Token4
+L = [a-zA-Z_]
+D = [0-9]
+NUMERO = [0-9]+
+ID = [a-zA-Z]?+[0-9]*
+WHITE=[ \t\r\n] 
+
+FOR="for"
+IF="if"
+WHILE="while"
+DO="do"
+INT="int"
+STRING="string"
+CHAR="char"
+BYTE="byte"
+FLOAT="float"
+SHORT="short"
+ESPACIO=" "
+PUNTOCOMA=";"
+INBLOQUE="{"
+FINBLOQUE="}"
+PARE1="("
+PARE2=")"
+IGUAL = "="
+PRINTF="printf"
+OPERADOR_RELACIONAL = [">"|"<"|"=="|"!="|">="|"<="|"<<"|">>"]
+OPERADOR_ARITMETICO = ["+"|"-"] 
+
+%{
+public String lexeme;
+%}
+%%
+{WHITE} {/*Ignore*/}
+
+/*IF*/
+{IF}{PARE1}{ID}{OPERADOR_RELACIONAL}{ID}{PARE2} {lexeme = yytext(); return IF_LINEA1;}
+{INBLOQUE} {lexeme = yytext(); return IF_LINEA2;}
+{PRINTF}{PARE1}{ID}{PARE2} {lexeme = yytext(); return IF_LINEA3;}
+{FINBLOQUE} {lexeme = yytext(); return IF_LINEA4;}
+
+. {return ERROR;}
+
+
